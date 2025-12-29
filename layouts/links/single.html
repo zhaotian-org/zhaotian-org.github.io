@@ -1,0 +1,42 @@
+{{ define "main" }}
+<main class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-bottom">
+                    <h1 class="h4 mb-0"><i class="bi bi-link-45deg me-2"></i>友情链接</h1>
+                </div>
+                <div class="card-body">
+                    {{ if .Content }}
+                    <div class="mb-4">
+                        {{ .Content }}
+                    </div>
+                    {{ end }}
+                    
+                    {{ if .Site.Data.links }}
+                    <div class="row g-3">
+                        {{ range .Site.Data.links }}
+                        <div class="col-md-6 col-lg-4">
+                            <a href="{{ .url }}" class="card h-100 text-decoration-none border-0 shadow-sm hover-card" target="_blank" rel="noopener noreferrer">
+                                <div class="card-body">
+                                    <h6 class="card-title mb-2">
+                                        <i class="bi bi-globe me-1 text-primary"></i>{{ .name }}
+                                    </h6>
+                                    <p class="card-text small text-muted mb-0">{{ .description }}</p>
+                                </div>
+                            </a>
+                        </div>
+                        {{ end }}
+                    </div>
+                    {{ else }}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                        <p>暂无友情链接</p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}

@@ -1,0 +1,213 @@
+{{ define "main" }}
+<!-- 轮播图区域 -->
+<section class="carousel-section mb-4">
+    <div class="container">
+        <div id="heroCarousel" class="carousel slide rounded-3 overflow-hidden shadow" data-bs-ride="carousel">
+            {{ $carouselPosts := where .Site.RegularPages "Type" "carousel" }}
+            {{ $sortedCarouselPosts := $carouselPosts.ByDate.Reverse }}
+            {{ $limitedCarouselPosts := first 5 $sortedCarouselPosts }}
+            
+            <!-- 轮播指示器 -->
+            <div class="carousel-indicators">
+                {{ range $index, $post := $limitedCarouselPosts }}
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" {{ if eq $index 0 }}class="active"{{ end }}></button>
+                {{ end }}
+            </div>
+            
+            <!-- 轮播内容 -->
+            <div class="carousel-inner">
+                {{ if $limitedCarouselPosts }}
+                    {{ range $index, $post := $limitedCarouselPosts }}
+                    <div class="carousel-item {{ if eq $index 0 }}active{{ end }}">
+                        <!-- 使用自定义图片，支持jpg和png格式 -->
+                        {{ $imageNumber := printf "%02d" (add $index 1) }}
+                        
+                        <div class="carousel-slide d-flex align-items-center justify-content-center text-white text-center" style="height: 360px; background-image: url('/carousel/{{ $imageNumber }}.jpg'), url('/carousel/{{ $imageNumber }}.png'); background-size: cover, cover; background-position: center, center; background-repeat: no-repeat, no-repeat; position: relative;">
+                            <!-- 渐变遮罩 -->
+                            <div class="position-absolute top-0 left-0 w-100 h-100 bg-gradient-to-b from-black/30 via-transparent to-black/70"></div>
+                            
+                            <div class="carousel-caption position-relative p-4 d-flex flex-column justify-content-end" style="bottom: 0; top: auto; left: 0; right: 0; transform: none; max-width: 100%;">
+                                <!-- 标题，最多两行，每行8个字 -->
+                                <h3 class="mb-2 carousel-title">{{ .Title }}</h3>
+                                
+                                <!-- 只有当有subtitle属性时才显示 -->
+                                {{ with .Params.subtitle }}
+                                <p class="mb-3 carousel-subtitle">{{ . }}</p>
+                                {{ end }}
+                                
+                                <!-- 点击阅读按钮 -->
+                                <a href="{{ .Permalink }}" class="btn btn-light align-self-start">点击阅读</a>
+                            </div>
+                        </div>
+                    </div>
+                    {{ end }}
+                {{ else }}
+                    <!-- 没有轮播图文章时显示默认背景 -->
+                    <div class="carousel-item active">
+                        <div class="carousel-slide d-flex align-items-center justify-content-center text-white text-center" style="height: 360px; background: linear-gradient(135deg, var(--bs-primary) 0%, var(--bs-indigo) 100%); position: relative;">
+                            <!-- 渐变遮罩 -->
+                            <div class="position-absolute top-0 left-0 w-100 h-100 bg-gradient-to-b from-black/30 via-transparent to-black/70"></div>
+                            
+                            <div class="carousel-caption position-relative p-4 d-flex flex-column justify-content-end" style="bottom: 0; top: auto; left: 0; right: 0; transform: none; max-width: 100%;">
+                                <h3 class="mb-2 carousel-title">欢迎访问我的博客</h3>
+                                <p class="mb-3 carousel-subtitle">这里展示最新的博客文章</p>
+                            </div>
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+            
+            <!-- 只在有多个轮播项时显示控制按钮 -->
+            {{ if gt (len $limitedCarouselPosts) 1 }}
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+            {{ end }}
+        </div>
+    </div>
+</section>
+
+<!-- 主体三栏布局 -->
+<main class="container">
+    <div class="row g-4">
+        <!-- 左侧公告栏 - 缩小 -->
+        <aside class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top" style="top: calc(var(--navbar-height) + 20px);">
+                {{ partial "announcement.html" . }}
+            </div>
+        </aside>
+        
+        <!-- 中间文章列表 - 变宽 -->
+        <div class="col-12 col-lg-7">
+            <!-- 移动端公告（仅在移动端显示） -->
+            <div class="d-lg-none mb-4">
+                {{ partial "announcement.html" . }}
+            </div>
+            
+            {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") }}
+            
+            <!-- 文章列表 -->
+            <div class="post-list">
+                {{ $showImage := .Site.Params.showFeaturedImage | default false }}
+                {{ range $paginator.Pages }}
+                <article class="card border-0 shadow-sm mb-4 post-card">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <!-- 左侧文章内容 -->
+                            <div class="{{ if and $showImage .Params.featuredImage }}col-8{{ else }}col-12{{ end }}">
+                                <header class="mb-2">
+                                    <h2 class="h5 card-title mb-2">
+                                        <a href="{{ .Permalink }}" class="text-decoration-none stretched-link">{{ .Title }}</a>
+                                    </h2>
+                                    <div class="d-flex flex-wrap gap-2 small text-muted">
+                                        <span><i class="bi bi-calendar3 me-1"></i>{{ .PublishDate.Format "2006-01-02" }}</span>
+                                        {{ if or .Params.author $.Site.Params.author }}
+                                        <span><i class="bi bi-person me-1"></i>{{ if .Params.author }}{{ .Params.author }}{{ else }}{{ $.Site.Params.author }}{{ end }}</span>
+                                        {{ end }}
+                                        <span><i class="bi bi-clock me-1"></i>{{ .ReadingTime }} 分钟</span>
+                                        {{ range .Params.categories }}
+                                        <span class="badge bg-primary">{{ . }}</span>
+                                        {{ end }}
+                                    </div>
+                                </header>
+                                <p class="card-text text-muted small mb-2 post-summary">
+                                    {{ .Description | default (substr .Content 0 150) | plainify | truncate 120 }}
+                                </p>
+                                {{ if .Params.tags }}
+                                <div class="d-flex flex-wrap gap-1">
+                                    {{ range first 3 .Params.tags }}
+                                    <span class="badge bg-secondary bg-opacity-25 text-secondary small">{{ . }}</span>
+                                    {{ end }}
+                                </div>
+                                {{ end }}
+                            </div>
+                            <!-- 右侧图片（如果开启且有图片） -->
+                            {{ if and $showImage .Params.featuredImage }}
+                            <div class="col-4">
+                                <img src="{{ .Params.featuredImage }}" alt="{{ .Title }}" class="img-fluid rounded h-100 object-fit-cover" style="max-height: 140px;">
+                            </div>
+                            {{ end }}
+                        </div>
+                    </div>
+                </article>
+                {{ end }}
+            </div>
+            
+            <!-- 分页 -->
+            {{ if gt $paginator.TotalPages 1 }}
+            <nav aria-label="文章分页">
+                <ul class="pagination justify-content-center flex-wrap">
+                    <!-- 上一页 -->
+                    {{ if $paginator.HasPrev }}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $paginator.Prev.URL }}"><i class="bi bi-chevron-left"></i></a>
+                    </li>
+                    {{ else }}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-left"></i></span>
+                    </li>
+                    {{ end }}
+                    
+                    <!-- 页码显示：按照需求优化 -->
+                    {{ $totalPages := $paginator.TotalPages }}
+                    {{ $currentPage := $paginator.PageNumber }}
+                    
+                    <!-- 显示第1页 -->
+                    <li class="page-item {{ if eq $currentPage 1 }}active{{ end }}">
+                        <a class="page-link" href="{{ $paginator.First.URL }}">1</a>
+                    </li>
+                    
+                    <!-- 如果总页数 <= 3，显示全部页码 -->
+                    {{ if le $totalPages 3 }}
+                        {{ range seq 2 $totalPages }}
+                        <li class="page-item {{ if eq $currentPage . }}active{{ end }}">
+                            <a class="page-link" href="{{ (index $paginator.Pagers (sub . 1)).URL }}">{{ . }}</a>
+                        </li>
+                        {{ end }}
+                    {{ else }}
+                        <!-- 显示第2页 -->
+                        <li class="page-item {{ if eq $currentPage 2 }}active{{ end }}">
+                            <a class="page-link" href="{{ (index $paginator.Pagers 1).URL }}">2</a>
+                        </li>
+                        
+                        <!-- 显示第3页 -->
+                        <li class="page-item {{ if eq $currentPage 3 }}active{{ end }}">
+                            <a class="page-link" href="{{ (index $paginator.Pagers 2).URL }}">3</a>
+                        </li>
+                        
+                        <!-- 如果总页数 > 3，显示省略号 -->
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                        
+                        <!-- 显示最后一页 -->
+                        <li class="page-item {{ if eq $currentPage $totalPages }}active{{ end }}">
+                            <a class="page-link" href="{{ $paginator.Last.URL }}">{{ $totalPages }}</a>
+                        </li>
+                    {{ end }}
+                    
+                    <!-- 下一页 -->
+                    {{ if $paginator.HasNext }}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ $paginator.Next.URL }}"><i class="bi bi-chevron-right"></i></a>
+                    </li>
+                    {{ else }}
+                    <li class="page-item disabled">
+                        <span class="page-link"><i class="bi bi-chevron-right"></i></span>
+                    </li>
+                    {{ end }}
+                </ul>
+            </nav>
+            {{ end }}
+        </div>
+        
+        <!-- 右侧推荐栏 -->
+        <aside class="col-lg-3 d-none d-lg-block">
+            <div class="sticky-top" style="top: calc(var(--navbar-height) + 20px);">
+                {{ partial "sidebar.html" . }}
+            </div>
+        </aside>
+    </div>
+</main>
+{{ end }}

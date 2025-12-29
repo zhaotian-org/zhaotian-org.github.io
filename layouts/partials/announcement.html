@@ -1,0 +1,41 @@
+<!-- 网站公告栏 -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-transparent border-bottom">
+        <h5 class="mb-0"><i class="bi bi-megaphone me-2"></i>网站公告</h5>
+    </div>
+    <div class="card-body p-0">
+        {{ $notices := where .Site.RegularPages "Type" "notice" }}
+        {{ if gt (len $notices) 0 }}
+        <ul class="list-group list-group-flush">
+            {{ $pinned := slice }}
+            {{ $regular := slice }}
+            
+            {{ range $notices }}
+                {{ if .Params.pinned }}
+                    {{ $pinned = $pinned | append . }}
+                {{ else }}
+                    {{ $regular = $regular | append . }}
+                {{ end }}
+            {{ end }}
+            
+            {{ $regular = sort $regular "Date" "desc" }}
+            {{ $sorted := $pinned | append $regular }}
+            
+            {{ range first 5 $sorted }}
+            <li class="list-group-item px-3 py-2 {{ if .Params.pinned }}bg-primary bg-opacity-10 border-start border-primary border-3{{ end }}">
+                {{ if .Params.pinned }}<i class="bi bi-pin-angle-fill text-primary me-1 small"></i>{{ end }}
+                <a href="{{ .Permalink }}" class="text-decoration-none d-block">
+                    <div class="text-truncate small fw-medium">{{ .Title }}</div>
+                    <small class="text-muted">{{ .Date.Format "2006-01-02" }}</small>
+                </a>
+            </li>
+            {{ end }}
+        </ul>
+        {{ else }}
+        <div class="text-center text-muted py-4">
+            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+            <small>暂无公告</small>
+        </div>
+        {{ end }}
+    </div>
+</div>

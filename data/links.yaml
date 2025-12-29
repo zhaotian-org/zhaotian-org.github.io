@@ -1,0 +1,19 @@
+- name: "Hugo官网"
+  url: "https://gohugo.io/"
+  description: "世界上最快的静态网站生成器"
+
+- name: "GitHub"
+  url: "https://github.com/"
+  description: "全球最大的代码托管平台"
+
+- name: "Stack Overflow"
+  url: "https://stackoverflow.com/"
+  description: "程序员的问答社区"
+
+- name: "MDN Web Docs"
+  url: "https://developer.mozilla.org/"
+  description: "Web开发者的权威资源"
+
+- name: "CSS-Tricks"
+  url: "https://css-tricks.com/"
+  description: "关于CSS的技巧和教程"

@@ -1,0 +1,77 @@
+<!-- 导航栏 - 滚动时自动隐藏 -->
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm" id="mainNav">
+    <div class="container">
+        <!-- 网站Logo和标题 -->
+        <a class="navbar-brand fw-bold" href="{{ .Site.BaseURL }}">
+            <i class="bi bi-journal-richtext me-2"></i>{{ .Site.Title }}
+        </a>
+        
+        <!-- 移动端菜单按钮 -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="切换导航">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- 导航菜单 -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {{ range .Site.Menus.main }}
+                    <li class="nav-item">
+                        <a class="nav-link {{ if or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}active{{ end }}" href="{{ .URL }}">
+                            <!-- 根据菜单项名称添加对应图标 -->
+                            {{ if eq .Name "首页" }}
+                                <i class="bi bi-house me-2"></i>
+                            {{ else if eq .Name "分类" }}
+                                <i class="bi bi-folder me-2"></i>
+                            {{ else if eq .Name "标签" }}
+                                <i class="bi bi-tags me-2"></i>
+                            {{ else if eq .Name "归档" }}
+                                <i class="bi bi-archive me-2"></i>
+                            {{ else if eq .Name "友链" }}
+                                <i class="bi bi-link me-2"></i>
+                            {{ else if eq .Name "关于" }}
+                                <i class="bi bi-person me-2"></i>
+                            {{ end }}
+                            {{ .Name }}
+                        </a>
+                    </li>
+                    {{ end }}
+                </ul>
+            
+            <!-- 右侧功能区 -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- 搜索按钮 -->
+                <button class="btn btn-link nav-link p-0" type="button" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="搜索" title="搜索文章">
+                    <i class="bi bi-search fs-5"></i>
+                </button>
+                
+                <!-- 主题切换按钮 -->
+                <button class="btn btn-link nav-link p-0" type="button" id="themeToggle" aria-label="切换主题" title="切换主题">
+                    <i class="bi bi-moon-fill fs-5" id="themeIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- 搜索模态框 -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-0">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control border-0 shadow-none fs-5" id="searchInput" placeholder="搜索文章..." autofocus>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="关闭"></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div id="searchResults" class="list-group list-group-flush"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 导航栏占位符 -->
+<div style="height: var(--navbar-height);"></div>

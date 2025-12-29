@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+<head>
+    {{ partial "head.html" . }}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- 页面头部导航 -->
+    {{ partial "header.html" . }}
+    
+    <!-- 主体内容 -->
+    <div class="flex-grow-1">
+        {{ block "main" . }}{{ end }}
+    </div>
+    
+    <!-- 页面底部 -->
+    {{ partial "footer.html" . }}
+    
+    <!-- 脚本 -->
+    {{ partial "scripts.html" . }}
+</body>
+</html>

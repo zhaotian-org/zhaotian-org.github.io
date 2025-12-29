@@ -1,0 +1,37 @@
+{{ define "main" }}
+<main class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-bottom">
+                    <h1 class="h4 mb-0"><i class="bi bi-folder me-2"></i>热门分类</h1>
+                </div>
+                <div class="card-body">
+                    {{ $categories := .Site.Taxonomies.categories.ByCount }}
+                    {{ $topCategories := first 12 $categories }}
+                    {{ if gt (len $topCategories) 0 }}
+                    <div class="row g-3">
+                        {{ range $topCategories }}
+                        <div class="col-6 col-md-4 col-lg-3">
+                            <a href="{{ .Page.Permalink }}" class="card h-100 text-decoration-none shadow-sm hover-card category-card">
+                                <div class="card-body text-center py-3">
+                                    <i class="bi bi-folder2 fs-3 text-primary d-block mb-2"></i>
+                                    <h6 class="mb-1">{{ .Name }}</h6>
+                                    <span class="badge bg-secondary">{{ .Count }} 篇</span>
+                                </div>
+                            </a>
+                        </div>
+                        {{ end }}
+                    </div>
+                    {{ else }}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                        <p>暂无分类</p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}

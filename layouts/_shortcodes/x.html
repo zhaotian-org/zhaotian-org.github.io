@@ -1,0 +1,36 @@
+{{- $user := .Get "user" | default (.Get 0) -}}
+{{- $id := .Get "id" | default (.Get 1) -}}
+{{- $title := .Get "title" | default "X Post" -}}
+
+<div class="x-post" style="max-width: 600px; margin: 1rem auto; padding: 1rem; border: 1px solid var(--border-color); border-radius: 0.5rem;">
+  <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--primary-color); display: flex; align-items: center; justify-content: center; margin-right: 0.75rem;">
+      <span style="color: white; font-weight: bold;">X</span>
+    </div>
+    <div>
+      <div style="font-weight: bold;">{{ $user }}</div>
+      <div style="font-size: 0.85rem; color: var(--secondary-color);">@{{ $user }}</div>
+    </div>
+  </div>
+  <div style="margin: 1rem 0; padding: 0.5rem;">
+    <p>由于网络限制，无法直接获取X帖子内容。您可以通过以下链接查看原帖：</p>
+    <a 
+      href="https://x.com/{{ $user }}/status/{{ $id }}" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      style="color: var(--primary-color); text-decoration: underline;"
+    >
+      https://x.com/{{ $user }}/status/{{ $id }}
+    </a>
+  </div>
+  <div style="font-size: 0.85rem; color: var(--secondary-color);">
+    <a 
+      href="https://x.com/{{ $user }}/status/{{ $id }}" 
+      target="_blank" 
+      rel="noopener noreferrer"
+      style="color: var(--secondary-color); text-decoration: none;"
+    >
+      查看原文
+    </a>
+  </div>
+</div>

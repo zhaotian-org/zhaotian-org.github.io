@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Matrix Rain</title>
+  <style>
+    :root {
+      --clr: #0f0; /* 默认绿色 */
+    }
+    
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .container {
+      background: #000;
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+    
+    .cloud {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 100px;
+      filter: drop-shadow(0 0 35px var(--clr));
+      animation: animateColor 10s linear infinite;
+    }
+    
+    .cloud p {
+      position: absolute;
+      color: var(--clr);
+      font-size: 1.2em;
+      font-weight: 400;
+      animation: fall linear infinite;
+    }
+    
+    @keyframes fall {
+      0% { transform: translateY(-100vh); }
+      100% { transform: translateY(100vh); }
+    }
+    
+    @keyframes animateColor {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="cloud"></div>
+  </div>
+  <script>
+    function randomText() {
+      var text = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?";
+      return text[Math.floor(Math.random() * text.length)];
+    }
+    
+    function rain() {
+      let cloud = document.querySelector('.cloud');
+      let e = document.createElement('p');
+      e.classList.add('drop');
+      cloud.appendChild(e);
+      
+      let left = Math.floor(Math.random() * 1000);
+      let size = Math.random() * 1.5;
+      let duration = Math.random() * 1 + 1;
+      
+      e.innerText = randomText();
+      e.style.left = left + 'px';
+      e.style.fontSize = 0.5 + size + 'em';
+      e.style.animationDuration = 1 + duration + 's';
+      
+      setTimeout(() => {
+        cloud.removeChild(e);
+      }, 2000);
+    }
+    
+    setInterval(rain, 50);
+  </script>
+</body>
+</html>

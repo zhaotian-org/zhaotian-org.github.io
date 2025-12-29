@@ -1,0 +1,68 @@
+<!-- 推荐模块 -->
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-header bg-transparent border-bottom">
+        <h5 class="mb-0"><i class="bi bi-stars me-2"></i>推荐文章</h5>
+    </div>
+    <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+            {{ $current := . }}
+            {{ $recommended := slice }}
+            {{ if eq .Kind "page" }}
+                {{ $recommended = .Site.RegularPages.Related . | first 5 }}
+            {{ else }}
+                {{ $recommended = first 5 (where .Site.RegularPages "Type" "posts") }}
+            {{ end }}
+            {{ if $recommended }}
+                {{ range $recommended }}
+                <li class="list-group-item px-3 py-2">
+                    <a href="{{ .Permalink }}" class="text-decoration-none d-block">
+                        <div class="text-truncate fw-medium small">{{ .Title }}</div>
+                        <small class="text-muted">
+                            <i class="bi bi-calendar3 me-1"></i>{{ .PublishDate.Format "2006-01-02" }}
+                        </small>
+                    </a>
+                </li>
+                {{ end }}
+            {{ else }}
+                <li class="list-group-item text-center text-muted py-3">
+                    <small>暂无推荐</small>
+                </li>
+            {{ end }}
+        </ul>
+    </div>
+</div>
+
+<!-- 热门标签 -->
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-header bg-transparent border-bottom">
+        <h5 class="mb-0"><i class="bi bi-tags me-2"></i>热门标签</h5>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+            {{ $tags := .Site.Taxonomies.tags.ByCount }}
+            {{ range first 10 $tags }}
+            <a href="{{ .Page.Permalink }}" class="badge bg-secondary text-decoration-none">
+                {{ .Name }} <span class="badge bg-light text-dark">{{ .Count }}</span>
+            </a>
+            {{ end }}
+        </div>
+    </div>
+</div>
+
+<!-- 分类导航 -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-transparent border-bottom">
+        <h5 class="mb-0"><i class="bi bi-folder me-2"></i>分类</h5>
+    </div>
+    <div class="card-body p-0">
+        <ul class="list-group list-group-flush">
+            {{ $categories := .Site.Taxonomies.categories.ByCount }}
+            {{ range first 6 $categories }}
+            <li class="list-group-item d-flex justify-content-between align-items-center px-3 py-2">
+                <a href="{{ .Page.Permalink }}" class="text-decoration-none">{{ .Name }}</a>
+                <span class="badge bg-primary rounded-pill">{{ .Count }}</span>
+            </li>
+            {{ end }}
+        </ul>
+    </div>
+</div>

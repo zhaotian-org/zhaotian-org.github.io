@@ -1,0 +1,92 @@
+{{ define "main" }}
+    <section class="taxonomy-page">
+        <h1 class="taxonomy-title"><i class="fas fa-tag"></i> 标签：{{ .Title }}</h1>
+        
+        <div class="post-list">
+            {{ $paginator := .Paginate .Pages }}
+            {{ if gt $paginator.TotalNumberOfElements 0 }}
+            {{ range $paginator.Pages }}
+            <article class="post-item">
+                <div class="post-item-content">
+                    <header class="post-header">
+                        <h1 class="post-title">
+                            <a href="{{ .Permalink }}">{{ .Title }}</a>
+                        </h1>
+                        <div class="post-meta">
+                        <span class="post-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            {{ .PublishDate.Format "2006-01-02" }}
+                        </span>
+                        {{ if ne .PublishDate .Lastmod }}
+                        <span class="post-meta-item">
+                            <i class="fas fa-edit"></i>
+                            {{ .Lastmod.Format "2006-01-02" }}
+                        </span>
+                        {{ end }}
+                        {{ if or .Params.author .Site.Params.author }}
+                        <span class="post-meta-item">
+                            <i class="fas fa-user"></i>
+                            {{ if .Params.author }}{{ .Params.author }}{{ else }}{{ .Site.Params.author }}{{ end }}
+                        </span>
+                        {{ end }}
+                        <span class="post-meta-item">
+                            <i class="fas fa-file-word"></i>
+                            {{ .WordCount }} 字
+                        </span>
+                        <span class="post-meta-item">
+                            <i class="fas fa-clock"></i>
+                            {{ .ReadingTime }} 分钟
+                        </span>
+                        <span class="post-meta-item">
+                            <i class="fas fa-folder"></i>
+                            {{ range .Params.categories }}
+                            <a href="{{ "categories/" | absURL }}{{ . | urlize }}/" class="post-category">{{ . }}</a>
+                            {{ end }}
+                        </span>
+                    </div>
+                </header>
+                <div class="post-summary">
+                    {{ .Description | default (substr .Content 0 200) | plainify }}
+                </div>
+                {{ if .Params.tags }}
+                <div class="post-tags">
+                    {{ range .Params.tags }}
+                    <a href="{{ "tags/" | absURL }}{{ . | urlize }}/" class="post-tag">{{ . }}</a>
+                    {{ end }}
+                </div>
+                {{ end }}
+                </div>
+                {{ if .Params.featuredImage }}
+                <div class="post-image">
+                    <img src="{{ .Params.featuredImage }}" alt="{{ .Title }}" class="post-thumbnail">
+                </div>
+                {{ end }}
+            </article>
+            {{ end }}
+            
+            <!-- 分页 -->
+            {{ if or $paginator.HasPrev $paginator.HasNext }}
+            <nav class="pagination">
+                {{ if $paginator.HasPrev }}
+                <a href="{{ $paginator.Prev.URL }}" class="pagination-item">&laquo;</a>
+                {{ else }}
+                <span class="pagination-item disabled">&laquo;</span>
+                {{ end }}
+                
+                {{ range $paginator.Pagers }}
+                <a href="{{ .URL }}" class="pagination-item {{ if eq . $paginator }}active{{ end }}">{{ .PageNumber }}</a>
+                {{ end }}
+                
+                {{ if $paginator.HasNext }}
+                <a href="{{ $paginator.Next.URL }}" class="pagination-item">&raquo;</a>
+                {{ else }}
+                <span class="pagination-item disabled">&raquo;</span>
+                {{ end }}
+            </nav>
+            {{ end }}
+            {{ else }}
+            <p class="no-content">该标签下暂无文章</p>
+            {{ end }}
+        </div>
+    </section>
+{{ end }}

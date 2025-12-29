@@ -1,0 +1,119 @@
+# 基础站点设置
+baseURL = "http://example.org/"
+languageCode = "zh-CN"
+title = "我的Hugo博客"
+author = "博主"
+copyright = "© 2025 我的Hugo博客"
+
+# 分类和标签配置
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+# 菜单配置
+[[menu.main]]
+  name = "首页"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "分类"
+  url = "/categories/"
+  weight = 2
+
+[[menu.main]]
+  name = "标签"
+  url = "/tags/"
+  weight = 3
+
+[[menu.main]]
+  name = "归档"
+  url = "/archive/"
+  weight = 4
+
+[[menu.main]]
+  name = "友链"
+  url = "/links/"
+  weight = 5
+
+[[menu.main]]
+  name = "关于"
+  url = "/about/"
+  weight = 6
+
+
+# 新的分页配置方式（兼容Hugo 1.141.0+）
+[pagination]
+  pagersize = 6
+  path = "page"
+
+# Markdown配置
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true  # 允许HTML标签
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = true
+    style = "github"
+
+# 输出格式配置
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+
+# 搜索配置
+[outputFormats]
+  [outputFormats.JSON]
+    baseName = "search"
+    isPlainText = true
+    isHTML = false
+    mediaType = "application/json"
+
+# 图片处理配置
+[imaging]
+  quality = 75
+  resampleFilter = "Lanczos"
+  anchor = "smart"
+
+# SEO配置
+[params]
+  # 站点信息
+  description = "一个使用Hugo构建的静态博客"
+  keywords = "Hugo, 博客, 技术, 编程"
+  author = "博主"
+  # 社交链接
+  social = [
+    { name = "GitHub", url = "https://github.com" },
+    { name = "twitter", url = "https://x.com" },
+    { name = "Google", url = "https://google.com" }
+  ]
+  # 备案信息
+  icp = ""  # 如需备案信息请填写
+  # 默认特色图片
+  defaultFeaturedImage = "/images/default.jpg"
+  # 阅读速度配置（每分钟单词数）
+  readingSpeed = 300
+  # 评论系统开关
+  comments = true  # 是否开启评论系统，true为开启，false为关闭
+  # 文章列表显示特色图片开关
+  showFeaturedImage = true  # true显示右侧图片，false不显示
+
+# 忽略日志配置
+
+
+# X短代码配置
+[privacy]
+  [privacy.x]
+    disable = false
+    enableDNT = false
+    simple = true
+
+# 服务配置
+[services]
+  [services.x]
+    disableInlineCSS = false
+
+

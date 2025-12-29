@@ -1,0 +1,61 @@
+{{ define "main" }}
+<main class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-bottom">
+                    <h1 class="h4 mb-0"><i class="bi bi-collection me-2"></i>{{ .Title }}</h1>
+                </div>
+                <div class="card-body">
+                    {{ $paginator := .Paginate .Pages }}
+                    
+                    {{ if gt (len $paginator.Pages) 0 }}
+                    <div class="list-group list-group-flush">
+                        {{ range $paginator.Pages }}
+                        <a href="{{ .Permalink }}" class="list-group-item list-group-item-action border-0 rounded mb-2 py-3">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <h6 class="mb-1">{{ .Title }}</h6>
+                                <small class="text-muted">{{ .PublishDate.Format "2006-01-02" }}</small>
+                            </div>
+                            <p class="mb-1 small text-muted text-truncate">{{ .Description | default (.Summary | plainify | truncate 100) }}</p>
+                            {{ if .Params.tags }}
+                            <div class="d-flex gap-1 mt-2">
+                                {{ range first 3 .Params.tags }}
+                                <span class="badge bg-secondary bg-opacity-25 text-secondary small">{{ . }}</span>
+                                {{ end }}
+                            </div>
+                            {{ end }}
+                        </a>
+                        {{ end }}
+                    </div>
+                    
+                    <!-- 分页 -->
+                    {{ if gt $paginator.TotalPages 1 }}
+                    <nav aria-label="分页" class="mt-4">
+                        <ul class="pagination justify-content-center flex-wrap">
+                            {{ if $paginator.HasPrev }}
+                            <li class="page-item"><a class="page-link" href="{{ $paginator.Prev.URL }}"><i class="bi bi-chevron-left"></i></a></li>
+                            {{ end }}
+                            {{ range $paginator.Pagers }}
+                            <li class="page-item {{ if eq . $paginator }}active{{ end }}">
+                                <a class="page-link" href="{{ .URL }}">{{ .PageNumber }}</a>
+                            </li>
+                            {{ end }}
+                            {{ if $paginator.HasNext }}
+                            <li class="page-item"><a class="page-link" href="{{ $paginator.Next.URL }}"><i class="bi bi-chevron-right"></i></a></li>
+                            {{ end }}
+                        </ul>
+                    </nav>
+                    {{ end }}
+                    {{ else }}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                        <p>暂无内容</p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}

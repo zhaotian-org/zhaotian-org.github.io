@@ -1,0 +1,72 @@
+{{ define "main" }}
+<main class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-bottom">
+                    <h1 class="h4 mb-0"><i class="bi bi-archive me-2"></i>归档</h1>
+                </div>
+                <div class="card-body">
+                    {{ $posts := where .Site.RegularPages "Type" "posts" }}
+                    {{ $years := $posts.GroupByDate "2006" }}
+                    
+                    {{ if gt (len $years) 0 }}
+                    <div class="accordion accordion-flush" id="archiveAccordion">
+                        {{ range $yearIndex, $year := $years.Reverse }}
+                        <div class="accordion-item border-0">
+                            <!-- 年份折叠头 -->
+                            <h2 class="accordion-header">
+                                <button class="accordion-button {{ if ne $yearIndex 0 }}collapsed{{ end }} bg-transparent ps-0" type="button" data-bs-toggle="collapse" data-bs-target="#year-{{ .Key }}" aria-expanded="{{ if eq $yearIndex 0 }}true{{ else }}false{{ end }}">
+                                    <i class="bi bi-calendar-event me-2 text-primary"></i>
+                                    <span class="fw-bold text-primary">{{ .Key }} 年</span>
+                                    <span class="badge bg-secondary ms-2">{{ len .Pages }} 篇</span>
+                                </button>
+                            </h2>
+                            <div id="year-{{ .Key }}" class="accordion-collapse collapse {{ if eq $yearIndex 0 }}show{{ end }}" data-bs-parent="#archiveAccordion">
+                                <div class="accordion-body ps-4">
+                                    {{ $months := .Pages.GroupByDate "2006-01" }}
+                                    <div class="accordion accordion-flush" id="monthAccordion-{{ $year.Key }}">
+                                        {{ range $monthIndex, $month := $months.Reverse }}
+                                        <div class="accordion-item border-0">
+                                            <!-- 月份折叠头 -->
+                                            <h3 class="accordion-header">
+                                                <button class="accordion-button {{ if ne $monthIndex 0 }}collapsed{{ end }} bg-transparent py-2 ps-0 small" type="button" data-bs-toggle="collapse" data-bs-target="#month-{{ $year.Key }}-{{ $monthIndex }}" aria-expanded="{{ if eq $monthIndex 0 }}true{{ else }}false{{ end }}">
+                                                    <i class="bi bi-calendar3 me-2 text-muted"></i>
+                                                    <span class="text-muted">{{ dateFormat "01月" (index .Pages 0).PublishDate }}</span>
+                                                    <span class="badge bg-light text-secondary ms-2">{{ len .Pages }}</span>
+                                                </button>
+                                            </h3>
+                                            <div id="month-{{ $year.Key }}-{{ $monthIndex }}" class="accordion-collapse collapse {{ if eq $monthIndex 0 }}show{{ end }}">
+                                                <div class="accordion-body py-0 ps-4">
+                                                    <ul class="list-group list-group-flush">
+                                                        {{ range .Pages.ByDate.Reverse }}
+                                                        <li class="list-group-item border-0 py-2 px-3 rounded mb-1 hover-bg">
+                                                            <a href="{{ .Permalink }}" class="text-decoration-none d-flex justify-content-between align-items-center">
+                                                                <span class="text-truncate me-3">{{ .Title }}</span>
+                                                                <small class="text-muted flex-shrink-0">{{ .PublishDate.Format "01-02" }}</small>
+                                                            </a>
+                                                        </li>
+                                                        {{ end }}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{ end }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{ end }}
+                    </div>
+                    {{ else }}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                        <p>暂无文章</p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}

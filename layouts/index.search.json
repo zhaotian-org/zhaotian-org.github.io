@@ -1,0 +1,21 @@
+{{ $pages := .Site.RegularPages }}
+{{ $search := slice }}
+{{ range $pages }}
+    {{ $page := . }}
+    {{ $content := .Plain }}
+    {{ $summary := .Summary | plainify }}
+    {{ $categories := .Params.categories | default slice }}
+    {{ $tags := .Params.tags | default slice }}
+    
+    {{ $date := .PublishDate.Format "2006-01-02" }}
+    {{ $search = $search | append (dict
+        "title" .Title
+        "url" .Permalink
+        "content" $content
+        "excerpt" $summary
+        "categories" $categories
+        "tags" $tags
+        "date" $date
+    ) }}
+{{ end }}
+{{ jsonify $search }}

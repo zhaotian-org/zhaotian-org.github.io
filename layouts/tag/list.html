@@ -1,0 +1,31 @@
+{{ define "main" }}
+<main class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-bottom">
+                    <h1 class="h4 mb-0"><i class="bi bi-tag me-2"></i>热门标签</h1>
+                </div>
+                <div class="card-body">
+                    {{ $tags := .Site.Taxonomies.tags.ByCount }}
+                    {{ $topTags := first 20 $tags }}
+                    {{ if gt (len $topTags) 0 }}
+                    <div class="d-flex flex-wrap gap-2">
+                        {{ range $topTags }}
+                        <a href="{{ .Page.Permalink }}" class="btn btn-outline-secondary">
+                            {{ .Name }} <span class="badge bg-primary ms-1">{{ .Count }}</span>
+                        </a>
+                        {{ end }}
+                    </div>
+                    {{ else }}
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                        <p>暂无标签</p>
+                    </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{ end }}
