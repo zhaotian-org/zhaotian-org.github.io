@@ -1,5 +1,7 @@
 # 📝 Hugo博客
 
+**评论系统说明**：本项目支持第三方评论系统Twikoo，需自行部署。部署教程详见：[Twikoo官网](https://twikoo.js.org/frontend.html)（本项目使用Netlify部署）。
+
 ## 0. Hugo博客
 
 本项目是一个基于Hugo静态站点生成器构建的现代化博客系统，采用Bootstrap框架进行样式设计，具有响应式布局，适配各种设备。
@@ -27,6 +29,7 @@
   <img src="other-images/05.png" alt="友链页面" style="width: 30%; border-radius: 5px;">
   <img src="other-images/06.png" alt="关于页面" style="width: 30%; border-radius: 5px;">
   <img src="other-images/07.png" alt="搜索功能" style="width: 30%; border-radius: 5px;">
+  <img src="other-images/08.png" alt="文章详情" style="width: 30%; border-radius: 5px;">
 </div>
 
 ## 2. 📋 主要板块
@@ -182,6 +185,6 @@ hugo -d ./dist # 将静态文件输出到dist目录（替代默认public）
 ```
 
 ## 8. 📧 联系方式
-
+- 有任何问题, 联系邮箱如下, 免费帮忙部署或者问题解惑  --实现自己的个人博客
 - QQ邮箱：2630880751@qq.com
 - 🌟 欢迎fork和star

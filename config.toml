@@ -1,9 +1,9 @@
 # 基础站点设置
-baseURL = "http://example.org/"
+baseURL = "https://zhaotian.de5.net/"
 languageCode = "zh-CN"
-title = "我的Hugo博客"
-author = "博主"
-copyright = "© 2025 我的Hugo博客"
+title = "zhaotian的blog"
+author = "zhaotian"
+copyright = "© 2025 zhaotian的blog"
 
 # 分类和标签配置
 [taxonomies]
@@ -83,10 +83,10 @@ copyright = "© 2025 我的Hugo博客"
   # 站点信息
   description = "一个使用Hugo构建的静态博客"
   keywords = "Hugo, 博客, 技术, 编程"
-  author = "博主"
+  author = "zhaotian"
   # 社交链接
   social = [
-    { name = "GitHub", url = "https://github.com" },
+    { name = "GitHub", url = "https://github.com/zhaotian-org/zhaotian-org.github.io" },
     { name = "twitter", url = "https://x.com" },
     { name = "Google", url = "https://google.com" }
   ]
