@@ -1,0 +1,9 @@
+{{- $title := .Get "title" | default "Details" -}}
+{{- $open := .Get "open" | default false -}}
+
+<details class="details-content my-3"{{ if eq $open true }} open{{ end }}>
+  <summary class="details-summary p-2 bg-light rounded cursor-pointer font-weight-bold">{{ $title }}</summary>
+  <div class="details-body p-3 bg-light-subtle rounded mt-1 border-left border-info border-3">
+    {{ .Inner | markdownify }}
+  </div>
+</details>
