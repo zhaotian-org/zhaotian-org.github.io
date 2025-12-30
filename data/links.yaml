@@ -17,3 +17,7 @@
 - name: "CSS-Tricks"
   url: "https://css-tricks.com/"
   description: "关于CSS的技巧和教程"
+
+- name: "JavaScript.info"
+  url: "https://javascript.info/"
+  description: "JavaScript教程"
