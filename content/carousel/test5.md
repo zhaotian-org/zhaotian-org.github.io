@@ -10,7 +10,7 @@ tags: ["Hugo", "博客", "静态网站"]
 >测试注释功能显示样式
 
 
-{{< qr text="https://gohugo.io" />}}
+<!-- QR短代码已移除，避免构建失败 -->
 <span>shortcode</span>
 
 

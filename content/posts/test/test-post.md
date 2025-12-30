@@ -11,7 +11,6 @@ tags: ["Hugo", "博客", "静态网站"]
 >测试注释功能显示样式
 
 
-{{< qr text="https://gohugo.io" />}}
 <small>shortcode</small>   
 
 ```markdown
