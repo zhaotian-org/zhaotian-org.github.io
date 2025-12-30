@@ -7,7 +7,7 @@ categories: ["Python", "爬虫"]
 tags: ["Python", "爬虫", "Requests", "BeautifulSoup"]
 keywords: ["Python", "爬虫", "Requests", "BeautifulSoup", "网页爬取"]
 description: "Python爬虫基础教程，使用Requests和BeautifulSoup爬取网页数据。"
-featuredImage: ""
+featuredImage: "/images/05.jpg"
 author: "博主"
 ---
 

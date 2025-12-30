@@ -85,11 +85,11 @@
         <aside class="col-lg-4">
             <div class="sticky-top" style="top: calc(var(--navbar-height) + 20px);">
                 <!-- 文章目录 - 最多两级 -->
-                <div class="card border-0 shadow-sm mb-3">
+                <div class="card border-0 shadow-sm mb-3 toc-card">
                     <div class="card-header bg-transparent border-bottom">
                         <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i>目录</h5>
                     </div>
-                    <div class="card-body py-2" style="max-height: 300px; overflow-y: auto;">
+                    <div class="card-body py-2 toc-container" style="max-height: 300px; overflow-y: auto;">
                         <nav id="toc" class="toc-nav">
                             <ul class="nav flex-column" id="tocList">
                                 <!-- 由JS动态生成，最多两级 -->
@@ -98,17 +98,17 @@
                     </div>
                 </div>
                 
-                <!-- 相关文章 - 仅3篇 -->
-                {{ $related := .Site.RegularPages.Related . | first 3 }}
-                {{ if $related }}
+                <!-- 相关文章 - 仅 3篇 -->
                 <div class="card border-0 shadow-sm">
                     <div class="card-header bg-transparent border-bottom">
                         <h5 class="mb-0"><i class="bi bi-bookmark-star me-2"></i>相关文章</h5>
                     </div>
                     <div class="card-body p-0">
+                        {{ $related := .Site.RegularPages.Related . | first 3 }}
+                        {{ if $related }}
                         <ul class="list-group list-group-flush">
                             {{ range $related }}
-                            <li class="list-group-item px-3 py-2">
+                            <li class="list-group-item px-3 py-3 related-article-item">
                                 <a href="{{ .Permalink }}" class="text-decoration-none d-block">
                                     <div class="text-truncate small fw-medium">{{ .Title }}</div>
                                     <small class="text-muted">
@@ -118,9 +118,13 @@
                             </li>
                             {{ end }}
                         </ul>
+                        {{ else }}
+                        <div class="text-center text-muted py-4">
+                            <small>暂无内容</small>
+                        </div>
+                        {{ end }}
                     </div>
                 </div>
-                {{ end }}
             </div>
         </aside>
     </div>

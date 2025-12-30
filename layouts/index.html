@@ -93,16 +93,16 @@
             <div class="post-list">
                 {{ $showImage := .Site.Params.showFeaturedImage | default false }}
                 {{ range $paginator.Pages }}
-                <article class="card border-0 shadow-sm mb-4 post-card">
-                    <div class="card-body">
-                        <div class="row g-3">
+                <article class="card border-0 shadow-sm mb-2 post-card">
+                    <div class="card-body p-3">
+                        <div class="d-flex">
                             <!-- 左侧文章内容 -->
-                            <div class="{{ if and $showImage .Params.featuredImage }}col-8{{ else }}col-12{{ end }}">
-                                <header class="mb-2">
-                                    <h2 class="h5 card-title mb-2">
-                                        <a href="{{ .Permalink }}" class="text-decoration-none stretched-link">{{ .Title }}</a>
+                            <div class="flex-grow-1 post-content-area">
+                                <header class="mb-1">
+                                    <h2 class="h6 card-title mb-1">
+                                        <a href="{{ .Permalink }}" class="text-decoration-none stretched-link post-title-text" data-full-title="{{ .Title }}">{{ .Title }}</a>
                                     </h2>
-                                    <div class="d-flex flex-wrap gap-2 small text-muted">
+                                    <div class="d-flex flex-wrap gap-1 text-xs text-muted">
                                         <span><i class="bi bi-calendar3 me-1"></i>{{ .PublishDate.Format "2006-01-02" }}</span>
                                         {{ if or .Params.author $.Site.Params.author }}
                                         <span><i class="bi bi-person me-1"></i>{{ if .Params.author }}{{ .Params.author }}{{ else }}{{ $.Site.Params.author }}{{ end }}</span>
@@ -113,21 +113,21 @@
                                         {{ end }}
                                     </div>
                                 </header>
-                                <p class="card-text text-muted small mb-2 post-summary">
-                                    {{ .Description | default (substr .Content 0 150) | plainify | truncate 120 }}
+                                <p class="card-text text-muted text-sm mb-1 post-summary-text" data-full-summary="{{ .Description | default (substr .Content 0 200) | plainify }}">
+                                    {{ .Description | default (substr .Content 0 200) | plainify }}
                                 </p>
                                 {{ if .Params.tags }}
                                 <div class="d-flex flex-wrap gap-1">
                                     {{ range first 3 .Params.tags }}
-                                    <span class="badge bg-secondary bg-opacity-25 text-secondary small">{{ . }}</span>
+                                    <span class="badge bg-secondary bg-opacity-25 text-secondary text-xs">{{ . }}</span>
                                     {{ end }}
                                 </div>
                                 {{ end }}
                             </div>
-                            <!-- 右侧图片（如果开启且有图片） -->
-                            {{ if and $showImage .Params.featuredImage }}
-                            <div class="col-4">
-                                <img src="{{ .Params.featuredImage }}" alt="{{ .Title }}" class="img-fluid rounded h-100 object-fit-cover" style="max-height: 140px;">
+                            <!-- 右侧图片（如果有图片） -->
+                            {{ if .Params.featuredImage }}
+                            <div class="post-featured-image ms-3">
+                                <img src="{{ .Params.featuredImage }}" alt="{{ .Title }}" class="rounded shadow-sm">
                             </div>
                             {{ end }}
                         </div>

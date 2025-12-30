@@ -7,7 +7,7 @@ categories: ["Python", "进阶"]
 tags: ["Python", "装饰器", "进阶"]
 keywords: ["Python", "装饰器", "进阶", "函数式编程"]
 description: "Python装饰器详解，从基础概念到高级应用，全面掌握Python装饰器。"
-featuredImage: ""
+featuredImage: "/images/05.jpg"
 author: "博主"
 ---
 

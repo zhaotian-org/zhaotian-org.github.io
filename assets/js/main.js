@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initReadingProgress();
     initPageTransition();
     initSnow();
+    initTextTruncation();
     
     // 初始化KaTeX自动渲染
     renderMathInElement(document.body, {
@@ -201,6 +202,7 @@ function initSearch() {
 function initTOC() {
     const tocList = document.getElementById('tocList');
     const postContent = document.getElementById('postContent');
+    const tocContainer = document.querySelector('.toc-container');
     
     if (!tocList || !postContent) return;
     
@@ -255,6 +257,21 @@ function initTOC() {
             link.classList.remove('active');
             if (link.getAttribute('href') === `#${current}`) {
                 link.classList.add('active');
+                
+                // 自动滚动目录容器，使当前项可见
+                if (tocContainer) {
+                    const linkRect = link.getBoundingClientRect();
+                    const containerRect = tocContainer.getBoundingClientRect();
+                    
+                    // 如果当前项不在可视区域内，滚动到中间位置
+                    if (linkRect.top < containerRect.top || linkRect.bottom > containerRect.bottom) {
+                        const scrollTop = link.offsetTop - tocContainer.offsetHeight / 2 + link.offsetHeight / 2;
+                        tocContainer.scrollTo({
+                            top: scrollTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
             }
         });
         
@@ -542,5 +559,66 @@ function initPageTransition() {
                 postList.style.transition = 'all 0.3s ease';
             }
         });
+    });
+}
+
+/**
+ * 文字智能截断
+ * 汉字算 1，其他字符算 0.5
+ * 标题最多 26 个汉字等效长度
+ * 简介最多 26 个汉字等效长度
+ */
+function initTextTruncation() {
+    // 计算字符串的视觉长度（汉字=1，其他=0.5）
+    function getVisualLength(str) {
+        let length = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charAt(i);
+            // 判断是否为汉字或全角字符
+            if (/[\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef]/.test(char)) {
+                length += 1;
+            } else {
+                length += 0.5;
+            }
+        }
+        return length;
+    }
+    
+    // 截断字符串到指定视觉长度
+    function truncateByVisualLength(str, maxLength) {
+        let length = 0;
+        let result = '';
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charAt(i);
+            // 判断是否为汉字或全角字符
+            if (/[\u4e00-\u9fa5\u3000-\u303f\uff00-\uffef]/.test(char)) {
+                length += 1;
+            } else {
+                length += 0.5;
+            }
+            if (length > maxLength) {
+                return result + '...';
+            }
+            result += char;
+        }
+        return result;
+    }
+    
+    // 处理标题
+    const titleElements = document.querySelectorAll('.post-title-text');
+    titleElements.forEach(el => {
+        const fullTitle = el.getAttribute('data-full-title') || el.textContent;
+        if (getVisualLength(fullTitle) > 26) {
+            el.textContent = truncateByVisualLength(fullTitle, 26);
+        }
+    });
+    
+    // 处理简介
+    const summaryElements = document.querySelectorAll('.post-summary-text');
+    summaryElements.forEach(el => {
+        const fullSummary = el.getAttribute('data-full-summary') || el.textContent;
+        if (getVisualLength(fullSummary) > 32) {
+            el.textContent = truncateByVisualLength(fullSummary, 32);
+        }
     });
 }

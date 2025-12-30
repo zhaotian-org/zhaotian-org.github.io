@@ -7,7 +7,7 @@ categories: ["Python", "数据分析"]
 tags: ["Python", "数据分析", "NumPy", "Pandas"]
 keywords: ["Python", "数据分析", "NumPy", "Pandas", "数据处理"]
 description: "Python数据分析基础教程，使用NumPy和Pandas进行数据处理和分析。"
-featuredImage: ""
+featuredImage: "/images/05.jpg"
 author: "博主"
 ---
 

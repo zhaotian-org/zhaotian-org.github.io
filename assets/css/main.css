@@ -13,6 +13,56 @@
     --content-max-width: 1200px;
 }
 
+/* 自定义文本大小类 */
+.text-xs {
+    font-size: 0.75rem !important;
+    line-height: 1.25;
+}
+
+.text-sm {
+    font-size: 0.875rem !important;
+    line-height: 1.5;
+}
+
+.text-base {
+    font-size: 1rem !important;
+    line-height: 1.75;
+}
+
+.text-lg {
+    font-size: 1.125rem !important;
+    line-height: 1.75;
+}
+
+/* 移除文章卡片默认阴影，减少视觉干扰 */
+.post-card {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    transition: all 0.2s ease;
+}
+
+/* 悬停时轻微提升效果 */
+.post-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08) !important;
+}
+
+/* 减少文章列表间距 */
+.post-list {
+    gap: 0.5rem;
+}
+
+/* 移除之前的截断样式，使用模板中的精确字符截断 */
+.post-card .card-title a {
+    word-break: break-all;
+}
+
+.post-card .post-summary {
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* ============================================ 
    雪花效果样式
    ============================================ */
@@ -385,6 +435,45 @@
     margin: 1rem 0;
 }
 
+/* 数学公式样式 - 防止溢出 */
+.post-content math,
+.post-content svg,
+.post-content .katex-display,
+.post-content .math,
+.post-content .equation {
+    display: block;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    margin: 0.8rem 0;
+    padding: 0;
+    max-height: none;
+}
+
+.post-content .katex {
+    font-size: 1.125rem !important;
+}
+
+/* 确保公式容器可以水平滚动 */
+.post-content div.math-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    max-height: none;
+}
+
+/* 响应式调整公式大小 */
+@media (max-width: 767.98px) {
+    .post-content .katex {
+        font-size: 1rem !important;
+    }
+    
+    .post-content math,
+    .post-content svg {
+        font-size: 1rem !important;
+    }
+}
+
 /* 表格样式 */
 .post-content table {
     width: 100%;
@@ -502,6 +591,16 @@
 /* ============================================
    目录样式
    ============================================ */
+
+/* 目录卡片宽度缩小为原来的一半 */
+.toc-card {
+    max-width: 85%;
+}
+
+/* 目录容器滚动行为 */
+.toc-container {
+    scroll-behavior: smooth;
+}
 
 .toc-nav .nav-link {
     color: var(--text-color);
@@ -922,4 +1021,73 @@
 
 .page-item.active .page-link {
     transform: scale(1.05);
+}
+
+/* ============================================
+   文章卡片图片和文字截断样式
+   ============================================ */
+
+/* 文章特色图片 - 右侧显示，4:3比例 */
+.post-featured-image {
+    flex-shrink: 0;
+    width: 100px;
+    height: 75px; /* 4:3 比例 */
+    position: relative;
+    z-index: 2;
+}
+
+.post-featured-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 文章内容区域 */
+.post-content-area {
+    min-width: 0; /* 防止 flexbox 内容溢出 */
+    overflow: hidden;
+    flex: 1;
+}
+
+/* PC端文章标题 - 大字号 */
+.post-title-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.35rem;
+    font-weight: 600;
+}
+
+/* PC端文章简介 - 大字号 */
+.post-summary-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 1.425rem;
+}
+
+/* 移动端响应式调整 */
+@media (max-width: 767.98px) {
+    .post-featured-image {
+        width: 80px;
+        height: 60px;
+    }
+    
+    .post-title-text {
+        font-size: 0.95rem;
+    }
+    
+    .post-summary-text {
+        font-size: 0.85rem;
+    }
+}
+
+/* 小手机响应式调整 */
+@media (max-width: 575.98px) {
+    .post-featured-image {
+        width: 70px;
+        height: 52px;
+    }
 }
