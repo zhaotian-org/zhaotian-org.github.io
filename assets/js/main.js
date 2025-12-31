@@ -142,12 +142,14 @@ function initSearch() {
     let searchData = null;
     
     // 加载搜索数据
-    fetch('/search.json')
+    // 使用相对路径或根据当前域名动态构建路径，确保在不同部署环境下都能正确访问
+    const searchUrl = window.location.origin + '/search.json';
+    fetch(searchUrl)
         .then(response => response.json())
         .then(data => {
             searchData = data;
             fuse = new Fuse(searchData, {
-                keys: ['title'],
+                keys: ['title', 'content', 'excerpt'],
                 threshold: 0.4,
                 includeScore: true
             });
