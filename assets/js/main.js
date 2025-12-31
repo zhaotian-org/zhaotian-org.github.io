@@ -156,6 +156,13 @@ function initSearch() {
         })
         .catch(error => console.error('加载搜索数据失败:', error));
     
+    // 高亮关键词函数
+    function highlightKeyword(text, keyword) {
+        if (!keyword) return text;
+        const regex = new RegExp(`(${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+    }
+    
     // 搜索输入事件
     searchInput.addEventListener('input', function() {
         const query = this.value.trim();
@@ -168,12 +175,16 @@ function initSearch() {
         const results = fuse.search(query).slice(0, 6);
         
         if (results.length > 0) {
-            searchResults.innerHTML = results.map(result => `
-                <a href="${result.item.url}" class="list-group-item list-group-item-action">
-                    <div class="fw-medium">${result.item.title}</div>
-                    <small class="text-muted text-truncate d-block">${result.item.excerpt || ''}</small>
-                </a>
-            `).join('');
+            searchResults.innerHTML = results.map(result => {
+                const highlightedTitle = highlightKeyword(result.item.title, query);
+                const highlightedExcerpt = highlightKeyword(result.item.excerpt || '', query);
+                return `
+                    <a href="${result.item.url}" class="list-group-item list-group-item-action">
+                        <div class="fw-medium">${highlightedTitle}</div>
+                        <small class="text-muted text-truncate d-block">${highlightedExcerpt}</small>
+                    </a>
+                `;
+            }).join('');
         } else {
             searchResults.innerHTML = `
                 <div class="list-group-item text-center text-muted py-4">
